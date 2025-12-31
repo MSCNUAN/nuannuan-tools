@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="暖暖的个人导航页，分享Docker、NAS、软件教程及流量卡资源。">
+    <title>暖暖の百宝箱 🧰 | 软件·教程·流量卡</title> 
+    <style>
+        /* --- 样式区：深色模式 (Dark Mode) --- */
+        :root {
+            --bg-color: #121212;      /* 深邃黑背景 */
+            --card-bg: #1e1e1e;        /* 卡片深灰背景 */
+            --card-hover: #2d2d2d;     /* 卡片悬停颜色 */
+            --text-main: #e0e0e0;      /* 主文字：灰白 */
+            --text-sub: #a0a0a0;       /* 副文字：浅灰 */
+            --accent-color: #5dade2;   /* 暖暖蓝（提亮版） */
+            --tag-bg: #2c3e50;         /* 标签背景 */
+            --tag-text: #85c1e9;       /* 标签文字 */
+            --border-color: #333333;   /* 边框颜色 */
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            /* 深色模式下的极客网格背景 */
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 680px; 
+            width: 100%;
+        }
+
+        /* 头部卡片 */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 40px 20px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            /* 毛玻璃效果在深色下微调 */
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            object-fit: cover;
+            border: 4px solid #2c2c2c;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .avatar:hover {
+            transform: rotate(10deg) scale(1.05); 
+        }
+
+        .header h1 { 
+            margin: 5px 0 10px; 
+            font-size: 1.6em; 
+            font-weight: 800;
+            color: #fff; /* 标题纯白 */
+        }
+
+        .bio { 
+            color: var(--text-sub); 
+            font-size: 14px; 
+            max-width: 500px; 
+            margin: 0 auto; 
+        }
+
+        /* 标签云 */
+        .tech-tags {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        .tech-tag {
+            font-size: 12px;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 1px solid rgba(133, 193, 233, 0.2);
+        }
+
+        /* 分区标题 */
+        .section-title {
+            font-size: 15px;
+            margin: 30px 0 15px 5px;
+            font-weight: 700;
+            color: #666; /* 深色模式下标题稍微暗一点 */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        /* 列表容器 */
+        .link-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* 卡片样式 */
+        .link-card {
+            background: var(--card-bg);
+            padding: 16px 20px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .link-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            background: var(--card-hover);
+            border-color: var(--accent-color);
+        }
+
+        /* 图标 */
+        .link-icon {
+            font-size: 26px;
+            margin-right: 16px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .link-info { flex: 1; }
+
+        .link-info h3 { 
+            margin: 0 0 3px 0; 
+            font-size: 16px; 
+            font-weight: 600; 
+            color: #fff;
+        }
+        
+        .link-info p { 
+            margin: 0; 
+            font-size: 13px; 
+            color: var(--text-sub); 
+        }
+
+        /* 小箭头 */
+        .arrow { color: #555; font-size: 18px; }
+
+        /* 高亮卡片（搞钱项目 - 深色适配） */
+        .highlight-card {
+            /* 暗金/红渐变背景，突出但不刺眼 */
+            background: linear-gradient(to right, #2c2525, #202020);
+            border: 1px solid #c0392b; /* 红色描边 */
+        }
+        .highlight-card .tag-badge {
+            background: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 12px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="header">
+            <img src="https://user0634.cn.imgto.link/public/20251231/avatar.avif" 
+                 alt="暖暖头像" 
+                 class="avatar">
+            <h1>暖暖の百宝箱 🧰</h1>
+            
+            <div class="bio">
+                <p>
+                    嗨！我是暖暖 👋。专注于小白向科普教程。<br>
+                    分享好用的 Docker / NAS 神器，偶尔恰点饭 🍚。
+                </p>
+                <div class="tech-tags">
+                    <span class="tech-tag">🖥️ Halo博客</span>
+                    <span class="tech-tag">🐳 Docker</span>
+                    <span class="tech-tag">💾 NAS折腾</span>
+                    <span class="tech-tag">📶 免流/代理</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">📢 关注防失联</div>
+        <div class="link-list">
+            <a href="http://www.nuan1145.eu.cc/" target="_blank" class="link-card">
+                <span class="link-icon">🏠</span>
+                <div class="link-info">
+                    <h3>我的个人博客 </h3>
+                    <p>核心大本营！NAS、软件教程都在这，排版超舒适~</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://t.me/NUAN114514" target="_blank" class="link-card">
+                <span class="link-icon">✈️</span>
+                <div class="link-info">
+                    <h3>TG 频道 </h3>
+                    <p>发布最新教程更新、软件资源，防失联必备！</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://t.me/MSC4652" target="_blank" class="link-card">
+                <span class="link-icon">💬</span>
+                <div class="link-info">
+                    <h3>TG 摸鱼交流群</h3>
+                    <p>个个都是人才，说话又好听，有问题来群里问~</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="section-title">💰 严选服务 (亲测靠谱)</div>
+        <div class="link-list">
+            <a href="https://www.51haoka.cc/index?k=YktYNmtrWTN2R1k9" target="_blank" class="link-card highlight-card">
+                <span class="link-icon">📶</span>
+                <div class="link-info">
+                    <h3>宝藏大流量卡 <span class="tag-badge">自用</span></h3>
+                    <p>正规运营商，真实不虚标，月租便宜，流量党福音！</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="http://www.51haoka.cc/agent/reg.php?code=B4GD669B" target="_blank" class="link-card highlight-card">
+                <span class="link-icon">🤝</span>
+                <div class="link-info">
+                    <h3>流量卡代理招募  <span class="tag-badge">搞钱</span></h3>
+                    <p>顶级佣金，想搞副业的速来上车!</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://goso002.com/?from=24529" target="_blank" class="link-card">
+                <span class="link-icon">🍎</span>
+                <div class="link-info">
+                    <h3>苹果外区购买</h3>
+                    <p>美区/各区独享成品账号，下载软件不求人。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+        
+        <div class="section-title">🍎 苹果生态 & 玩机 (快捷指令/脚本)</div>
+        <div class="link-list">
+            <a href="https://www.icloud.com/" target="_blank" class="link-card">
+                <span class="link-icon">☁️</span>
+                <div class="link-info">
+                    <h3>iCloud 官网</h3>
+                    <p>云端管理，苹果用户的云上家园。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://www.kejicut.com/" target="_blank" class="link-card">
+                <span class="link-icon">🤖</span>
+                <div class="link-info">
+                    <h3>科技兽 (KejiCut)</h3>
+                    <p>优质的iOS快捷指令分享站，功能超全。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://www.rcuts.com/" target="_blank" class="link-card">
+                <span class="link-icon">⚡</span>
+                <div class="link-info">
+                    <h3>Rcuts 捷径社区</h3>
+                    <p>发现好用的快捷指令，提高玩机效率。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://whatshub.top/" target="_blank" class="link-card">
+                <span class="link-icon">🏄</span>
+                <div class="link-info">
+                    <h3>WhatsHub</h3>
+                    <p>Surge/Loon/QuantumultX 脚本模块聚合。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://pluginhub.kelee.one/" target="_blank" class="link-card">
+                <span class="link-icon">🧩</span>
+                <div class="link-info">
+                    <h3>PluginHub</h3>
+                    <p>高质量的 Loon/Surge 插件仓库。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://loonlab.103516.xyz/Plugin/" target="_blank" class="link-card">
+                <span class="link-icon">🎈</span>
+                <div class="link-info">
+                    <h3>Loon Lab</h3>
+                    <p>Loon 插件实验室，折腾党必备。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://nutrepo.com" target="_blank" class="link-card">
+                <span class="link-icon">🥜</span>
+                <div class="link-info">
+                    <h3>Nut Repo</h3>
+                    <p>坚果脚本库，各类规则修正。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://m.xiaobovlog.cn/3141592653589735683438308336351299258371677809721028935692791360354438585552276535150766892809570311549730155296183392275808151269685551120853317072173809599702411356959104239905804511844141941217911020259564930736375838948792062771593196028271536394172959451651867662124166610165152479760697111472264193821982064382445642343024839763783408956536961114789711720194808368565882461952509738461038814757621027431837325111978747957345563635248766488195483888187528117335915540767051623667350388302134739693734629554705896550278640512777731246089137252790877099675180663544622673651540639170960916466753046293447946410420065390901334598382509205246488536609007580826121394838637104289240029149397564838631556835659647273418107472439887547733966854769055222045403920171116471823142656330696315535537458537493303629051980072660731021946116735122653109978197838862239241559578688980395946372966167037017258655991667041733745148134791396329202704044723098448498159521223737229766857389" target="_blank" class="link-card">
+                <span class="link-icon">📱</span>
+                <div class="link-info">
+                    <h3>小波的资源页 (合集)</h3>
+                    <p>超全的快捷指令与玩机资源整合。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://wwweng.craft.me/menu" target="_blank" class="link-card">
+                <span class="link-icon">📑</span>
+                <div class="link-info">
+                    <h3>Craft Menu 资源</h3>
+                    <p>精品软件与规则整理。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="section-title">💻 系统镜像 & 开源社区</div>
+        <div class="link-list">
+             <a href="https://next.itellyou.cn/Original/" target="_blank" class="link-card">
+                <span class="link-icon">💿</span>
+                <div class="link-info">
+                    <h3>MSDN 我告诉你</h3>
+                    <p>最纯净的原版Windows/Office镜像下载。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://hellogithub.com/" target="_blank" class="link-card">
+                <span class="link-icon">🐱</span>
+                <div class="link-info">
+                    <h3>HelloGitHub</h3>
+                    <p>发现有趣、入门级的开源项目。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://club.fnnas.com/" target="_blank" class="link-card">
+                <span class="link-icon">🐂</span>
+                <div class="link-info">
+                    <h3>飞牛私有云 (FnNAS)</h3>
+                    <p>新兴的国产NAS系统论坛，折腾党聚集地。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://www.juwanhezi.com/downlist" target="_blank" class="link-card">
+                <span class="link-icon">🕹️</span>
+                <div class="link-info">
+                    <h3>聚玩盒子</h3>
+                    <p>各类游戏及软件资源下载。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+        
+        <div class="section-title">🎨 图标素材 & 美化</div>
+        <div class="link-list">
+             <a href="https://www.iconfont.cn/" target="_blank" class="link-card">
+                <span class="link-icon">🍧</span>
+                <div class="link-info">
+                    <h3>Iconfont 矢量库</h3>
+                    <p>阿里妈妈出品，国内最大的图标素材站。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://icon-sets.iconify.design/" target="_blank" class="link-card">
+                <span class="link-icon">✨</span>
+                <div class="link-info">
+                    <h3>Iconify</h3>
+                    <p>统一开源图标库，开发者必备。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://github.com/homarr-labs/dashboard-icons/tree/main/png" target="_blank" class="link-card">
+                <span class="link-icon">🍱</span>
+                <div class="link-info">
+                    <h3>Dashboard Icons</h3>
+                    <p>专门为NAS导航页/看板准备的精美图标。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="section-title">📺 二次元·追番基地</div>
+        <div class="link-list">
+             <a href="https://mikanani.me/" target="_blank" class="link-card">
+                <span class="link-icon">🍊</span>
+                <div class="link-info">
+                    <h3>蜜柑计划 (Mikan)</h3>
+                    <p>新番RSS订阅神器，追番下载必备。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://bgm.tv/" target="_blank" class="link-card">
+                <span class="link-icon">📝</span>
+                <div class="link-info">
+                    <h3>Bangumi 番组计划</h3>
+                    <p>记录你的追番进度，ACG爱好者的精神家园。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://www.moe321.com/" target="_blank" class="link-card">
+                <span class="link-icon">🧭</span>
+                <div class="link-info">
+                    <h3>萌导航</h3>
+                    <p>二次元专属导航站，各种萌站一网打尽。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://www.pixiv.net/" target="_blank" class="link-card">
+                <span class="link-icon">🎨</span>
+                <div class="link-info">
+                    <h3>Pixiv (P站)</h3>
+                    <p>全球最大的插画社区，看图收图必备 (需魔法)。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://www.36dm.org/" target="_blank" class="link-card">
+                <span class="link-icon">🌌</span>
+                <div class="link-info">
+                    <h3>36大院</h3>
+                    <p>动漫BT下载资源站。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://p3-ppx.byteimg.com/obj/ez-data/17433290426802a477bd800" target="_blank" class="link-card">
+                <span class="link-icon">🎁</span>
+                <div class="link-info">
+                    <h3>特供资源</h3>
+                    <p>一个神秘的备份链接，失效不补。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="section-title">🛠️ 在线黑科技工具</div>
+        <div class="link-list">
+            <a href="https://ps.gaoding.com/#/" target="_blank" class="link-card">
+                <span class="link-icon">🖌️</span>
+                <div class="link-info">
+                    <h3>在线 PS (稿定)</h3>
+                    <p>网页版Photoshop，临时改图急救神器。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="http://www.16xx8.com/photoshop/xinshoujiaocheng/" target="_blank" class="link-card">
+                <span class="link-icon">📚</span>
+                <div class="link-info">
+                    <h3>PS 新手教程</h3>
+                    <p>系统的PS学习资源，从入门到精通。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://www.aconvert.com/cn/" target="_blank" class="link-card">
+                <span class="link-icon">🔄</span>
+                <div class="link-info">
+                    <h3>Aconvert 全能转换</h3>
+                    <p>PDF、视频、图片格式互转，完全免费。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://imgto.link/zh-CN/free-image-hosting?trigger=true" target="_blank" class="link-card">
+                <span class="link-icon">🖼️</span>
+                <div class="link-info">
+                    <h3>ImgTo 图床</h3>
+                    <p>免费图片托管服务，适合博客贴图。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://telegraph-image-92x.pages.dev/" target="_blank" class="link-card">
+                <span class="link-icon">📤</span>
+                <div class="link-info">
+                    <h3>TG 图床</h3>
+                    <p>基于Telegraph的无限流量图床。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://postimages.org/" target="_blank" class="link-card">
+                <span class="link-icon">🌐</span>
+                <div class="link-info">
+                    <h3>Postimages</h3>
+                    <p>老牌国外图床，稳定好用。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://www.pptsupermarket.com/" target="_blank" class="link-card">
+                <span class="link-icon">📊</span>
+                <div class="link-info">
+                    <h3>PPT 超市</h3>
+                    <p>高质量PPT模板下载，打工人救星。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://tool.lu/" target="_blank" class="link-card">
+                <span class="link-icon">🧰</span>
+                <div class="link-info">
+                    <h3>在线工具 Tool.lu</h3>
+                    <p>程序员常用的工具箱，代码格式化、加密解密等。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://tool.lu/tinyimage/" target="_blank" class="link-card">
+                <span class="link-icon">📉</span>
+                <div class="link-info">
+                    <h3>图片压缩</h3>
+                    <p>智能压缩图片体积，保持画质。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://xdxsb.top/FreeTool/" target="_blank" class="link-card">
+                <span class="link-icon">🗡️</span>
+                <div class="link-info">
+                    <h3>小刀娱乐工具箱</h3>
+                    <p>集合了很多乱七八糟但实用的小软件。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://jsx.uptoz.cn/" target="_blank" class="link-card">
+                <span class="link-icon">✨</span>
+                <div class="link-info">
+                    <h3>极速侠工具</h3>
+                    <p>各类格式转换、办公辅助工具。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="section-title">🎥 影视·磁力搜</div>
+        <div class="link-list">
+             <a href="https://www.cz4k.com/" target="_blank" class="link-card">
+                <span class="link-icon">🎬</span>
+                <div class="link-info">
+                    <h3>厂长资源 (4K)</h3>
+                    <p>画质超高的在线影视站，强烈推荐。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://gimy.tv/" target="_blank" class="link-card">
+                <span class="link-icon">📺</span>
+                <div class="link-info">
+                    <h3>Gimy 剧迷</h3>
+                    <p>台版影视站，资源更新非常快。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://www.zxzjhd.com/" target="_blank" class="link-card">
+                <span class="link-icon">📹</span>
+                <div class="link-info">
+                    <h3>在线之家</h3>
+                    <p>主打美剧、韩剧更新，画质不错。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://www.bdjuhe.com/" target="_blank" class="link-card">
+                <span class="link-icon">🔍</span>
+                <div class="link-info">
+                    <h3>百度云搜索</h3>
+                    <p>聚合搜索百度网盘资源。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://btdig.com/index.htm" target="_blank" class="link-card">
+                <span class="link-icon">🧲</span>
+                <div class="link-info">
+                    <h3>BTDigg</h3>
+                    <p>强大的DHT磁力搜索引擎。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://btmayi.cc/" target="_blank" class="link-card">
+                <span class="link-icon">🐜</span>
+                <div class="link-info">
+                    <h3>蚂蚁BT</h3>
+                    <p>老牌磁力搜索站。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="section-title">🧩 浏览器插件神器</div>
+        <div class="link-list">
+            <a href="https://greasyfork.org/zh-CN/scripts" target="_blank" class="link-card">
+                <span class="link-icon">🐵</span>
+                <div class="link-info">
+                    <h3>GreasyFork (油猴脚本)</h3>
+                    <p>解锁网页更多玩法的脚本仓库，懂的都懂！</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://chrome.zzzmh.cn/index#index" target="_blank" class="link-card">
+                <span class="link-icon">⚡</span>
+                <div class="link-info">
+                    <h3>极简插件</h3>
+                    <p>国内可直连的Chrome插件站，下载安装超方便。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="section-title">🛠️ 绿色·破解软件宝库</div>
+        <div class="link-list">
+            <a href="http://www.52pojie.cn/" target="_blank" class="link-card">
+                <span class="link-icon">🔥</span>
+                <div class="link-info">
+                    <h3>吾爱破解 52pojie</h3>
+                    <p>国内最知名的破解论坛，各路大神云集。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://www.423down.com/" target="_blank" class="link-card">
+                <span class="link-icon">🛡️</span>
+                <div class="link-info">
+                    <h3>423Down</h3>
+                    <p>专注于去广告、纯净版软件，洁癖党必备！</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://www.ghxi.com/" target="_blank" class="link-card">
+                <span class="link-icon">🌰</span>
+                <div class="link-info">
+                    <h3>果核剥壳</h3>
+                    <p>优质的绿色软件分享站，更新速度快。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="http://www.landiannews.com/?utm_source=infinity" target="_blank" class="link-card">
+                <span class="link-icon">📰</span>
+                <div class="link-info">
+                    <h3>蓝点网</h3>
+                    <p>除了软件工具，还有很多及时的科技资讯。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://www.ypojie.com/" target="_blank" class="link-card">
+                <span class="link-icon">📦</span>
+                <div class="link-info">
+                    <h3>易破解</h3>
+                    <p>老牌资源站，系统镜像、办公软件这里都很全。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="section-title">🏎️ 只有晚上能打开 (懂得都懂)</div>
+        <div class="link-list">
+             <a href="https://javdb.com/?vft=1&vst=1" target="_blank" class="link-card">
+                <span class="link-icon">📒</span>
+                <div class="link-info">
+                    <h3>JavDB 数据库</h3>
+                    <p>车牌查询、封面预览，资料最全。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://missav.ai/dm45" target="_blank" class="link-card">
+                <span class="link-icon">🚍</span>
+                <div class="link-info">
+                    <h3>MissAV</h3>
+                    <p>高清、无码、流媒体播放。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://netflav.com/search" target="_blank" class="link-card">
+                <span class="link-icon">🍦</span>
+                <div class="link-info">
+                    <h3>NetFlav</h3>
+                    <p>你懂的Netflix，界面清爽。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://tktube.com/zh/" target="_blank" class="link-card">
+                <span class="link-icon">📺</span>
+                <div class="link-info">
+                    <h3>TKTube</h3>
+                    <p>视频聚合站，内容丰富。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://sukebei.nyaa.si/" target="_blank" class="link-card">
+                <span class="link-icon">😼</span>
+                <div class="link-info">
+                    <h3>Sukebei (Nyaa)</h3>
+                    <p>大名鼎鼎的N站里区，磁力源头。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://spankbang.com/s/cos/" target="_blank" class="link-card">
+                <span class="link-icon">💃</span>
+                <div class="link-info">
+                    <h3>SpankBang</h3>
+                    <p>Cosplay 等特定题材搜索。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://www.eporner.com/search/cos/" target="_blank" class="link-card">
+                <span class="link-icon">🎥</span>
+                <div class="link-info">
+                    <h3>Eporner (4K)</h3>
+                    <p>画质极高，支持搜索。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="section-title">☁️ 常用推荐 & 黑科技</div>
+        <div class="link-list">
+            <a href="https://mypikpak.com/drive/activity/invited?invitation-code=66396543" target="_blank" class="link-card">
+                <span class="link-icon">⚡</span>
+                <div class="link-info">
+                    <h3>PikPak 网盘</h3>
+                    <p>不限速、离线下载神器！</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+            <a href="https://www.123684.com/s/R2hjVv-6Pg13" target="_blank" class="link-card">
+                <span class="link-icon">💾</span>
+                <div class="link-info">
+                    <h3>个人网盘 (密码：NUAN）</h3>
+                    <p>免客户端下载，速度起飞，我的很多软件资源都在这。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+             <a href="https://github.com" target="_blank" class="link-card">
+                <span class="link-icon">🐙</span>
+                <div class="link-info">
+                    <h3>GitHub 开源站</h3>
+                    <p>全球最大的代码库，很多神仙软件的出处。</p>
+                </div>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 暖暖の百宝箱 🧰 <br> 折腾不止，分享不息 🚀</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
