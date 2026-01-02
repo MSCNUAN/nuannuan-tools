@@ -2,7 +2,7 @@
 
 👋 欢迎来到我的 GitHub 仓库！
 
-这里是我的 **[个人资源站](https://nuannuan-tools.vercel.app/)** 的源代码。这是一个轻量、简洁的个人导航/资源聚合页面。
+这里是我的 **[个人资源站](https://nuannuan-tools.vercel.app/)** 这是一个轻量、简洁的个人导航/资源聚合页面。
 
 ## 💡 如何复刻 (小白向)
 
