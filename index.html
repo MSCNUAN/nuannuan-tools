@@ -9,15 +9,15 @@
     <style>
         /* --- 核心变量：深空极客风 --- */
         :root {
-            --sidebar-bg: #15171e;        /* 左侧边栏背景 */
-            --main-bg: #1b1d24;           /* 主内容区背景 */
-            --card-bg: #23262e;           /* 卡片背景 */
-            --card-hover: #2b2f38;        /* 卡片悬停 */
-            --text-main: #e0e6ed;         /* 主文字 */
-            --text-sub: #777d8a;          /* 副文字 */
-            --accent: #4e8cff;            /* 提亮色(蓝) */
-            --border: #2d313a;            /* 边框色 */
-            --sidebar-width: 240px;       /* 侧边栏宽度 */
+            --sidebar-bg: #15171e; /* 左侧边栏背景 */
+            --main-bg: #1b1d24; /* 主内容区背景 */
+            --card-bg: #23262e; /* 卡片背景 */
+            --card-hover: #2b2f38; /* 卡片悬停 */
+            --text-main: #e0e6ed; /* 主文字 */
+            --text-sub: #777d8a; /* 副文字 */
+            --accent: #4e8cff; /* 提亮色(蓝) */
+            --border: #2d313a; /* 边框色 */
+            --sidebar-width: 240px; /* 侧边栏宽度 */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,7 +31,7 @@
             display: flex;
         }
 
-        a { text-decoration: none; color: 在herit; }
+        a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
         /* --- 1. 左侧侧边栏 (Sidebar) --- */
@@ -210,7 +210,7 @@
         .section-header i { margin-right: 10px; color: var(--accent); }
         .section-header h3 { font-size: 18px; color: #fff; }
         .section-header .tag { 
-            margin-left: auto; 
+            margin-left: auto;
             font-size: 12px; 
             background: #2c2f3b; 
             padding: 2px 8px; 
@@ -259,15 +259,15 @@
 
         .card-info { flex: 1; min-width: 0; }
         .card-info h4 { 
-            font-size: 15px; 
+            font-size: 15px;
             color: #fff; 
             margin-bottom: 5px; 
             white-space: nowrap; 
             overflow: hidden; 
-            text-overflow: ellipsis; 
+            text-overflow: ellipsis;
         }
         .card-info p { 
-            font-size: 12px; 
+            font-size: 12px;
             color: var(--text-sub); 
             line-height: 1.5;
             display: -webkit-box;
@@ -431,6 +431,16 @@
                             <p>顶级佣金，想搞副业的速来上车!</p>
                         </div>
                     </a>
+
+                    <a href="https://accboyytbnn.acceboy.com/" target="_blank" class="card highlight">
+                        <div class="card-badge">NEW</div>
+                        <div class="card-icon" style="font-size: 22px;">🌍</div>
+                        <div class="card-info">
+                            <h4>账号星球 | AI & 流媒体</h4>
+                            <p>ChatGPT / Netflix / 邮箱 / 游戏账号一站式购买，自动发货。</p>
+                        </div>
+                    </a>
+                    
                     <a href="https://goso002.com/?from=24529" target="_blank" class="card">
                         <div class="card-icon">🍎</div>
                         <div class="card-info">
@@ -947,7 +957,6 @@
                 allCards.forEach(c => {
                     if(c.style.display !== 'none') hasVisible = true;
                 });
-
                 if(!hasVisible) {
                     section.style.display = 'none';
                 } else {
@@ -959,12 +968,10 @@
         // 2. 实时时钟功能
         function updateClock() {
             const now = new Date();
-            
             // 格式化时间 24小时制 HH:MM:SS
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            
             // 格式化日期 YYYY-MM-DD 星期X
             const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -982,6 +989,3 @@
     </script>
 </body>
 </html>
-
-
-
