@@ -39,6 +39,7 @@
 
 * **📶 正规运营商流量卡**：【📶 [点击下单](https://www.51haoka.cc/index?k=YktYNmtrWTN2R1k9)】
 * **🍎 Apple ID / 充值卡 / 代理**：【🍎 [购买链接](https://goso002.com/?from=24529)】
+* * **🌍 海外账号 / AI / 流媒体 / 游戏**：【🛍️ [购买链接](https://accboyytbnn.acceboy.com/)】
 
 ### 🚀 网络加速
 
