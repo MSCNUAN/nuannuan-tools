@@ -9,7 +9,7 @@
 如果你也想拥有一个属于自己的资源导航站，但是不想自己敲代码：
 
 1.  **Fork** 本仓库 (点击右上角的 Fork 按钮)。
-2.  把仓库里的核心代码文件丢给 **ChatGPT / Gemini / DeepSeek** 等 AI。
+2.  **把仓库里的核心代码文件丢给 ChatGPT / Gemini / DeepSeek 等 AI。**
 3.  对 AI 说：“*请把里面的链接和文字替换成我自己的（附上你的github链接），然后把修改后的代码给我。*”
 4.  复制 AI 给你的代码覆盖原文件，然后部署 （里面的导航站信息任意替换，对AI说就可以！）。
 
@@ -38,6 +38,8 @@
 ### 🛒 流量 & 账号服务
 
 * **📶 正规运营商流量卡**：【📶 [点击下单](https://www.51haoka.cc/index?k=YktYNmtrWTN2R1k9)】
+* **💳 Bitget Wallet (免费外币卡)**：【👉 [点击申请](https://web3.bitget.com/share/1gWULE?inviteCode=NUAN1145)】
+* **🔶 币安 (Binance) 交易所**：【💰 [注册领新手礼](https://www.bmwweb.academy/referral/earn-together/refer2earn-usdc/claim?hl=zh-TC&ref=GRO_28502_RAE9X&utm_source=default)】
 * **🍎 Apple ID / 充值卡 / 代理**：【🍎 [购买链接](https://goso002.com/?from=24529)】
 * **🌍 海外账号 / AI / 流媒体 / 游戏**：【🛍️ [购买链接](https://accboyytbnn.acceboy.com/)】
 
