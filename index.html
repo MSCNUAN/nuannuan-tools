@@ -292,6 +292,132 @@
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #555; }
 
+        /* =================== */
+        /* --- 弹窗样式 (新增) --- */
+        /* =================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6); /* 背景遮罩 */
+            backdrop-filter: blur(5px); /* 背景模糊 */
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            /* 毛玻璃核心代码 */
+            background: rgba(35, 38, 46, 0.75); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #e0e6ed;
+            position: relative;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: scale(1);
+        }
+
+        /* 弹窗关闭按钮 */
+        .close-modal {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-size: 24px;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.2s;
+            background: transparent;
+            border: none;
+        }
+        .close-modal:hover { color: #fff; transform: rotate(90deg); }
+
+        /* 弹窗内容排版 */
+        .modal-header { text-align: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        .modal-header h2 { font-size: 22px; margin-bottom: 10px; color: #fff; }
+        .modal-header p { font-size: 14px; color: #aeb5c0; line-height: 1.6; }
+
+        .modal-section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 链接组样式 */
+        .link-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 10px;
+        }
+
+        .modal-link-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .modal-link-item:hover {
+            background: rgba(78, 140, 255, 0.15);
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .modal-link-item i { margin-right: 10px; color: var(--accent); width: 20px; text-align: center;}
+        .modal-link-item span { flex: 1; }
+        
+        /* .modal-link-item .tag-mini { 
+           注意：这里保留了CSS样式定义，虽然下面删除了HTML引用，保留它可以备用
+        } 
+        */
+        .modal-link-item .tag-mini { 
+            font-size: 10px; padding: 2px 6px; background: #ff7675; 
+            color: white; border-radius: 4px; margin-left: 5px; 
+        }
+
+        /* TG 按钮特效 */
+        .tg-btn-group { display: flex; gap: 15px; margin-bottom: 20px; }
+        .tg-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+        .tg-btn.channel { background: linear-gradient(135deg, #0088cc, #4e8cff); color: white; }
+        .tg-btn.group { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+        .tg-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             .sidebar { position: fixed; transform: translateX(-100%); }
@@ -315,6 +441,9 @@
                 z-index: 200;
                 box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             }
+            /* 弹窗适配 */
+            .link-group { grid-template-columns: 1fr; }
+            .modal-box { padding: 20px; }
         }
         @media (min-width: 769px) {
             .menu-toggle { display: none; }
@@ -951,6 +1080,71 @@
         </div>
     </main>
 
+    <div id="infoModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+    
+            <div class="modal-header">
+                <h2>👋 欢迎访问暖暖の百宝箱</h2>
+                <p>这些都是我个人一直在用觉得不错的网站，如有失效TG群内联系我，也欢迎投稿网站，随缘更新！</p>
+            </div>
+    
+            <div class="modal-section-title"><i class="fab fa-telegram-plane"></i> 关注防失联</div>
+            <div class="tg-btn-group">
+                <a href="https://t.me/NUAN114514" target="_blank" class="tg-btn channel">
+                    <i class="fas fa-bullhorn" style="margin-right:8px"></i> 订阅频道 (资源发布)
+                </a>
+                <a href="https://t.me/MSC4652" target="_blank" class="tg-btn group">
+                    <i class="fas fa-comments" style="margin-right:8px"></i> 加入群组 (吹水)
+                </a>
+            </div>
+    
+            <div class="modal-section-title"><i class="fas fa-toolbox"></i> 自用工具 & 资源</div>
+            <div class="link-group">
+                <a href="https://nuannuan-tools.vercel.app/" target="_blank" class="modal-link-item">
+                    <i class="fas fa-box-open"></i> <span>个人资源站 (综合导航)</span>
+                </a>
+                <a href="https://mypikpak.com/drive/activity/invited?invitation-code=66396543" target="_blank" class="modal-link-item">
+                    <i class="fas fa-cloud-download-alt"></i> <span>PikPak 磁力下载</span>
+                </a>
+                <a href="https://www.123684.com/s/R2hjVv-6Pg13" target="_blank" class="modal-link-item">
+                    <i class="fas fa-folder-open"></i> <span>123 网盘资源 (NUAN)</span>
+                </a>
+                <a href="https://www.cpolar.com/?channel=0&invite=6DaX" target="_blank" class="modal-link-item">
+                    <i class="fas fa-network-wired"></i> <span>自用内网穿透工具</span>
+                </a>
+                <a href="https://t.me/NUAN114514/5" target="_blank" class="modal-link-item">
+                    <i class="fas fa-fighter-jet"></i> <span>自用机场加速推荐</span>
+                </a>
+            </div>
+    
+            <div class="modal-section-title"><i class="fas fa-shopping-cart"></i> 流量 & 账号服务</div>
+            <div class="link-group">
+                <a href="https://www.51haoka.cc/index?k=YktYNmtrWTN2R1k9" target="_blank" class="modal-link-item">
+                    <i class="fas fa-sim-card"></i> <span>正规运营商流量卡</span>
+                </a>
+                <a href="https://web3.bitget.com/share/1gWULE?inviteCode=NUAN1145" target="_blank" class="modal-link-item">
+                    <i class="fas fa-wallet"></i> <span>Bitget Wallet (免费外币卡)</span>
+                </a>
+                <a href="https://accboyytbnn.acceboy.com/" target="_blank" class="modal-link-item">
+                    <i class="fas fa-globe"></i> <span>海外账号 / AI / 流媒体</span>
+                </a>
+                <a href="https://goso002.com/?from=24529" target="_blank" class="modal-link-item">
+                    <i class="fab fa-apple"></i> <span>Apple ID / 充值卡 / 代理</span>
+                </a>
+                <a href="https://www.bmwweb.academy/referral/earn-together/refer2earn-usdc/claim?hl=zh-TC&ref=GRO_28502_RAE9X&utm_source=default" target="_blank" class="modal-link-item">
+                    <i class="fas fa-coins"></i> <span>币安 (Binance) 交易所</span>
+                </a>
+            </div>
+            
+            <div style="text-align:center; margin-top:20px; font-size:12px; color:#666;">
+                点击右上角或遮罩区域关闭 ✨
+            </div>
+        </div>
+    </div>
+
     <script>
         // 1. 搜索功能
         document.getElementById('searchInput').addEventListener('keyup', function(e) {
@@ -982,6 +1176,7 @@
                 }
             });
         });
+
         // 2. 实时时钟功能
         function updateClock() {
             const now = new Date();
@@ -1003,6 +1198,31 @@
         // 立即更新一次，并每秒刷新
         updateClock();
         setInterval(updateClock, 1000);
+
+        // --- 3. 弹窗逻辑 (新增) ---
+        const modal = document.getElementById('infoModal');
+
+        // 打开弹窗函数
+        function openModal() {
+            modal.classList.add('show');
+        }
+
+        // 关闭弹窗函数
+        function closeModal() {
+            modal.classList.remove('show');
+        }
+
+        // 页面加载后自动打开 (延迟0.5秒增加流畅感)
+        window.addEventListener('load', () => {
+            setTimeout(openModal, 500);
+        });
+
+        // 点击遮罩层也可以关闭
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
